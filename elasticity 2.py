@@ -2,12 +2,8 @@ import pygame
 import math
 import sys
 import random
-# Initialize Pygame
 pygame.init()
 
-# Screen settings
-WIDTH = 900
-HEIGHT = 900
 screen = pygame.display.set_mode((900, 900))
 clock = pygame.time.Clock()
 spring = 50
@@ -30,7 +26,7 @@ class Bullet(pygame.sprite.Sprite):
     def update(self, x, y):
         self.rect.x = x - (self.mass/2)
         self.rect.y = y - (self.mass/2)
-        if self.rect.y >= HEIGHT - self.mass:
+        if self.rect.y >= 900 - self.mass:
             self.rect.y -= 10
 
 row = 5
@@ -206,21 +202,18 @@ while True:
         solid[i][2] = 0
 
     for i in range(len(solid) - 1, -1, -1):
-        if solid[i][5] >= WIDTH + solid[i][0] or solid[i][5] <= -solid[i][0] or solid[i][6] <= -solid[i][0]:
-            # remove physics object
+        if solid[i][5] >= 900 + solid[i][0] or solid[i][5] <= -solid[i][0] or solid[i][6] <= -solid[i][0]:
             solid.pop(i)
-
-            # remove corresponding sprite
             sprite = bullet_sprites.sprites()[i]
             sprite.kill()
-        if solid[i][6] >= HEIGHT - solid[i][0]:
-            solid[i][6] = HEIGHT - solid[i][0]
+        if solid[i][6] >= 900 - solid[i][0]:
+            solid[i][6] = 900 - solid[i][0]
             solid[i][4] *= -bounce
         elif solid[i][6] <= solid[i][0]:
             solid[i][6] = solid[i][0]
             solid[i][4] *= -bounce
-        if solid[i][5] >= WIDTH - solid[i][0]:
-            solid[i][5] = WIDTH - solid[i][0]
+        if solid[i][5] >= 900 - solid[i][0]:
+            solid[i][5] = 900 - solid[i][0]
             solid[i][3] *= -bounce
         elif solid[i][5] <= solid[i][0]:
             solid[i][5] = solid[i][0]

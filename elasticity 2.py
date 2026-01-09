@@ -185,6 +185,10 @@ while True:
             solid[i][6] -= push*3
         if keys[pygame.K_DOWN]:
             solid[i][6] += push
+        if keys[pygame.K_a]:
+            spring += 0.01
+        if keys[pygame.K_s]:
+            spring -= 0.01
         solid[i][2] += ygravity
         solid[i][1] -= xgravity
 

@@ -28,13 +28,16 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.y >= 900 - self.mass:
             self.rect.y -= 10
 
-row = 5
-col = 7
-solid = []
-
-for c in range(col):
-    for r in range(row):
-        solid.append([50, 0, 0, 0, 0, c*spring+200, r*spring+200])
+# row = 5
+# col = 7
+# solid = []
+#
+# for c in range(col):
+#     for r in range(row):
+#         solid.append([50, 0, 0, 0, 0, c*spring+200, r*spring+200])
+# bullet_sprites = pygame.sprite.Group()
+# for i in range(len(solid)):
+#     bullet_sprites.add(Bullet(solid[i][5], solid[i][6], solid[i][0]))
 
 # solid[i][0] m
 # solid[i][1] ax
@@ -43,14 +46,15 @@ for c in range(col):
 # solid[i][4] vy
 # solid[i][5] sx
 # solid[i][6] sy
-
+solid = []
 bullet_sprites = pygame.sprite.Group()
-for i in range(len(solid)):
-    bullet_sprites.add(Bullet(solid[i][5], solid[i][6], solid[i][0]))
+col = 6
+row = 4
 
 cdr = 0
 delete_list = []
 close_objects = []
+font = pygame.font.SysFont("calibri", 40, 0)
 
 
 
@@ -62,11 +66,51 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    if keys[pygame.K_f] and cdr == 0:
-        body = [50, 0, 0, 0, 0, mouse_pos[0], mouse_pos[1]]
-        solid.append(body)
-        bullet_sprites.add(Bullet(body[5], body[6], body[0]))
+    if keys[pygame.K_r]:
+        spring += 1
+    if keys[pygame.K_e]:
+        spring -= 1
+    if keys[pygame.K_w] and cdr == 0:
+        row += 1
+        solid = []
+        for c in range(col):
+            for r in range(row):
+                solid.append([50, 0, 0, 0, 0, c * spring + 200, r * spring + 200])
+        bullet_sprites = pygame.sprite.Group()
+        for i in range(len(solid)):
+            bullet_sprites.add(Bullet(solid[i][5], solid[i][6], solid[i][0]))
         cdr = 10
+    if keys[pygame.K_s] and cdr == 0:
+        row -= 1
+        solid = []
+        for c in range(col):
+            for r in range(row):
+                solid.append([50, 0, 0, 0, 0, c * spring + 200, r * spring + 200])
+        bullet_sprites = pygame.sprite.Group()
+        for i in range(len(solid)):
+            bullet_sprites.add(Bullet(solid[i][5], solid[i][6], solid[i][0]))
+        cdr = 10
+    if keys[pygame.K_a] and cdr == 0:
+        col -= 1
+        solid = []
+        for c in range(col):
+            for r in range(row):
+                solid.append([50, 0, 0, 0, 0, c * spring + 200, r * spring + 200])
+        bullet_sprites = pygame.sprite.Group()
+        for i in range(len(solid)):
+            bullet_sprites.add(Bullet(solid[i][5], solid[i][6], solid[i][0]))
+        cdr = 10
+    if keys[pygame.K_d] and cdr == 0:
+        col += 1
+        solid = []
+        for c in range(col):
+            for r in range(row):
+                solid.append([50, 0, 0, 0, 0, c * spring + 200, r * spring + 200])
+        bullet_sprites = pygame.sprite.Group()
+        for i in range(len(solid)):
+            bullet_sprites.add(Bullet(solid[i][5], solid[i][6], solid[i][0]))
+        cdr = 10
+
 
     cdr -= 1
     if cdr <= 0:
@@ -222,9 +266,16 @@ while True:
         sprite.update(solid[i][5], solid[i][6])
     bullet_sprites.draw(screen)
     grey = (92, 106, 120)
+
     pygame.draw.rect(screen, grey, [0, 0, 38, 900])
     pygame.draw.rect(screen, grey, [0, 0, 900, 38])
     pygame.draw.rect(screen, grey, [900 - 38, 0, 38, 900])
     pygame.draw.rect(screen, grey, [0, 900 - 38, 900, 38])
+    row_text = font.render('Rows: ' + str(row), True, (255, 255, 255))
+    col_text = font.render('Columns: ' + str(col), True, (255, 255, 255))
+    size_text = font.render('Length: ' + str(spring), True, (255, 255, 255))
+    screen.blit(row_text, (40, 40))
+    screen.blit(col_text, (40, 80))
+    screen.blit(size_text, (40, 120))
     pygame.display.update()
     clock.tick(60)

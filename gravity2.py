@@ -7,19 +7,20 @@ pygame.init()
 
 screen = pygame.display.set_mode((900, 900))
 clock = pygame.time.Clock()
-G = 5
+big_mass = 10000
+G = 1/(big_mass/100000)
 tweak = 20
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, xpos, ypos, mass):
         super().__init__()
         self.image = pygame.image.load("bullet.png")
-        self.mass = mass
-        self.image = pygame.transform.scale(self.image, (self.mass/5, self.mass/5))
+        self.mass = 20 + mass/(big_mass/100)
+        self.image = pygame.transform.scale(self.image, (self.mass, self.mass))
         self.rect = self.image.get_rect()
         self.rect.center = (xpos, ypos)
     def update(self, x, y):
-        self.rect.x = x - self.mass/10
-        self.rect.y = y - self.mass/10
+        self.rect.x = x - self.mass/2
+        self.rect.y = y - self.mass/2
         # if self.rect.x >= WIDTH + self.mass or self.rect.x <= -self.mass:
         #     self.kill()
         # if self.rect.y >= HEIGHT + self.mass or self.rect.y <= -self.mass:
@@ -59,7 +60,7 @@ while True:
         bullet_sprites.add(Bullet(body[5], body[6], body[0]))
         cdr = 10
     if keys[pygame.K_r] and cdr == 0:
-        body = [1000, 0, 0, 0, 0, mouse_pos[0], mouse_pos[1]]
+        body = [big_mass, 0, 0, 0, 0, mouse_pos[0], mouse_pos[1]]
         solid.append(body)
         bullet_sprites.add(Bullet(body[5], body[6], body[0]))
         cdr = 10
@@ -118,7 +119,7 @@ while True:
             sprite = bullet_sprites.sprites()[i]
             sprite.kill()
 
-    screen.fill((23, 33, 51))
+    #screen.fill((23, 33, 51))
     for i in range(len(bullet_sprites.sprites())):
         bullet_sprites.sprites()[i].update(solid[i][5], solid[i][6])
     bullet_sprites.draw(screen)
